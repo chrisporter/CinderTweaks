@@ -21,7 +21,7 @@
 */
 
 #include "cinder/CaptureImplDirectShow.h"
-
+#include "Dshow.h"
 
 using namespace std;
 
@@ -89,8 +89,58 @@ CaptureImplDirectShow::CaptureImplDirectShow( int32_t width, int32_t height, con
 	if( mDevice ) {
 		mDeviceID = device->getUniqueId();
 	}
+	//bool isCE = CaptureMgr::instanceVI()->setFormat(mDeviceID, tagAnalogVideoStandard::);
+	CaptureMgr::instanceVI()->setIdealFramerate(mDeviceID, 120);
 	if( ! CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight, crossbar ) )
 		throw CaptureExcInitFail();
+	/// CameraParametersForAutoCalibration
+	/*CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Brightness, 90.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Contrast, 50.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Hue, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Saturation, 64.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Sharpness, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gamma, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_ColorEnable, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_WhiteBalance, 5000.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_BacklightCompensation, 2.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gain, 13226.0);*/
+
+	///CameraParametersForInstallation
+	/*CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Brightness, 150.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Contrast, 150.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Hue, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Saturation, 64.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Sharpness, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gamma, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_ColorEnable, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_WhiteBalance, 5000.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_BacklightCompensation, 2.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gain, 13226.0);*/
+
+	///CameraParametersForInstallation
+	/*CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Brightness, 150.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Contrast, 150.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Hue, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Saturation, 64.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Sharpness, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gamma, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_ColorEnable, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_WhiteBalance, 5000.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_BacklightCompensation, 2.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gain, 13226.0);*/
+
+
+	///CameraParametersForNormalUsage-FP
+	/*CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Brightness, 150.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Contrast, 255.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Hue, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Saturation, 64.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Sharpness, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gamma, 1.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_ColorEnable, 0.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_WhiteBalance, 5000.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_BacklightCompensation, 2.0);
+	CaptureMgr::instanceVI()->setVideoSettingFilter(mDeviceID, tagVideoProcAmpProperty::VideoProcAmp_Gain, 17578);*/
 	mWidth = CaptureMgr::instanceVI()->getWidth( mDeviceID );
 	mHeight = CaptureMgr::instanceVI()->getHeight( mDeviceID );
 	mIsCapturing = true;
