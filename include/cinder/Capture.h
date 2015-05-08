@@ -25,6 +25,9 @@
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
 #include "cinder/Exception.h"
+#if defined(CINDER_MSW)
+#include "Strmif.h"
+#endif
 
 #if defined( CINDER_MAC )
 	#if defined( __OBJC__ )
@@ -62,12 +65,22 @@ class Capture {
   public:
 	class Device;
 	typedef std::shared_ptr<Device> DeviceRef;
-
+	
+	#if defined(CINDER_MSW)
+	static CaptureRef	create(int32_t width, int32_t height, const DeviceRef device,
+		PhysicalConnectorType connection) { return CaptureRef(new Capture(width, height, device, connection)); }
+	#endif
 	static CaptureRef	create( int32_t width, int32_t height, const DeviceRef device = DeviceRef() ) { return CaptureRef( new Capture( width, height, device ) ); }
+	
 
 	Capture() {}
 	//! \deprecated Call Capture::create() instead
 	Capture( int32_t width, int32_t height, const DeviceRef device = DeviceRef() );
+	#if defined(CINDER_MSW)
+	Capture(int32_t width, int32_t height, const DeviceRef device,
+		PhysicalConnectorType connection);
+	#endif
+	
 	~Capture() {}
 
 	//! Begin capturing video
@@ -136,7 +149,11 @@ class Capture {
 		
  protected: 
 	struct Obj {
-		Obj( int32_t width, int32_t height, const Capture::DeviceRef device );
+#if defined( CINDER_MSW )
+		Obj( int32_t width, int32_t height, const Capture::DeviceRef device, PhysicalConnectorType connection );
+#endif
+		Obj(int32_t width, int32_t height, const Capture::DeviceRef device);
+
 		virtual ~Obj();
 
 #if defined( CINDER_MAC ) 

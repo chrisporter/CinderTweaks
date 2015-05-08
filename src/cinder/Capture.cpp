@@ -75,12 +75,22 @@ Capture::DeviceRef Capture::findDeviceByNameContains( const string &nameFragment
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Capture::Obj
-Capture::Obj::Obj( int32_t width, int32_t height, const DeviceRef device )
+
+#if defined ( CINDER_MSW )
+
+Capture::Obj::Obj(int32_t width, int32_t height, const DeviceRef device, PhysicalConnectorType connection)
+{
+	mImpl = new CapturePlatformImpl(width, height, device, connection);
+}
+
+#endif
+
+Capture::Obj::Obj(int32_t width, int32_t height, const DeviceRef device)
 {
 #if defined( CINDER_COCOA )
 	mImpl = [[::CapturePlatformImpl alloc] initWithDevice:device width:width height:height];
 #else
-	mImpl = new CapturePlatformImpl( width, height, device );
+	mImpl = new CapturePlatformImpl( width, height, device  );
 #endif	
 }
 
@@ -97,6 +107,13 @@ Capture::Capture( int32_t width, int32_t height, const DeviceRef device )
 {
 	mObj = shared_ptr<Obj>( new Obj( width, height, device ) );
 }
+
+#if defined(CINDER_MSW)
+Capture::Capture(int32_t width, int32_t height, const DeviceRef device, PhysicalConnectorType connection)
+{
+	mObj = shared_ptr<Obj>(new Obj(width, height, device, connection));
+}
+#endif
 
 void Capture::start()
 {

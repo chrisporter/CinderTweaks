@@ -140,14 +140,33 @@ const vector<Capture::DeviceRef>& CaptureImplDirectShow::getDevices( bool forceR
 	return sDevices;
 }
 
-CaptureImplDirectShow::CaptureImplDirectShow( int32_t width, int32_t height, const Capture::DeviceRef device )
+CaptureImplDirectShow::CaptureImplDirectShow(int32_t width, int32_t height, const Capture::DeviceRef device)
+	: mWidth(width), mHeight(height), mCurrentFrame(width, height, false, SurfaceChannelOrder::BGR), mDeviceID(0)
+{
+	mDevice = device;
+	if (mDevice) {
+		mDeviceID = device->getUniqueId();
+	}
+
+	if (!CaptureMgr::instanceVI()->setupDevice(mDeviceID, mWidth, mHeight))
+		throw CaptureExcInitFail();
+	mWidth = CaptureMgr::instanceVI()->getWidth(mDeviceID);
+	mHeight = CaptureMgr::instanceVI()->getHeight(mDeviceID);
+	mIsCapturing = true;
+	mSurfaceCache = std::shared_ptr<SurfaceCache>(new SurfaceCache(mWidth, mHeight, SurfaceChannelOrder::BGR, 4));
+
+	mMgrPtr = CaptureMgr::instance();
+}
+
+CaptureImplDirectShow::CaptureImplDirectShow(int32_t width, int32_t height, const Capture::DeviceRef device, PhysicalConnectorType connection)
 	: mWidth( width ), mHeight( height ), mCurrentFrame( width, height, false, SurfaceChannelOrder::BGR ), mDeviceID( 0 )
 {
 	mDevice = device;
 	if( mDevice ) {
 		mDeviceID = device->getUniqueId();
 	}
-	if( ! CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight ) )
+
+	if( ! CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight, connection ) )
 		throw CaptureExcInitFail();
 	mWidth = CaptureMgr::instanceVI()->getWidth( mDeviceID );
 	mHeight = CaptureMgr::instanceVI()->getHeight( mDeviceID );

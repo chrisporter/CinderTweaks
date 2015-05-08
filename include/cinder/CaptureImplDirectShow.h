@@ -33,7 +33,8 @@ class CaptureImplDirectShow {
  public:
 	class Device;
 
-	CaptureImplDirectShow( int32_t width, int32_t height, const Capture::DeviceRef device );
+	CaptureImplDirectShow(int32_t width, int32_t height, const Capture::DeviceRef device, PhysicalConnectorType connection);
+	CaptureImplDirectShow(int32_t width, int32_t height, const Capture::DeviceRef device);
 	CaptureImplDirectShow( int32_t width, int32_t height );
 	~CaptureImplDirectShow();
 	
