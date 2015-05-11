@@ -230,7 +230,7 @@ videoDevice::videoDevice(){
 		 //Default values for capture type
 		 videoType 			= MEDIASUBTYPE_RGB24;
 	     connection     	= PhysConn_Video_Composite;
-		 storeConn			= 0;
+		 storeConn			= connection;
 		 
 		 videoSize 			= 0;
 	     width     			= 0;
@@ -673,7 +673,7 @@ bool videoInput::setupDevice(int deviceNumber){
 //                                            
 // ---------------------------------------------------------------------- 
 
-bool videoInput::setupDevice(int deviceNumber, int connection){
+bool videoInput::setupDevice(int deviceNumber, PhysicalConnectorType connection){
 	if(deviceNumber >= VI_MAX_CAMERAS || VDList[deviceNumber]->readyToCapture) return false;
 
 	setPhyCon(deviceNumber, connection);
@@ -701,7 +701,7 @@ bool videoInput::setupDevice(int deviceNumber, int w, int h){
 //                                            
 // ---------------------------------------------------------------------- 
 
-bool videoInput::setupDevice(int deviceNumber, int w, int h, int connection){
+bool videoInput::setupDevice(int deviceNumber, int w, int h, PhysicalConnectorType connection){
 	if(deviceNumber >= VI_MAX_CAMERAS || VDList[deviceNumber]->readyToCapture) return false;
 
 	setAttemptCaptureSize(deviceNumber,w,h);
@@ -1364,7 +1364,7 @@ void videoInput::stopDevice(int id){
 bool videoInput::restartDevice(int id){
 	if(isDeviceSetup(id))
 	{
-		int conn	 	= VDList[id]->storeConn;
+		PhysicalConnectorType conn = VDList[id]->storeConn;
 		int tmpW	   	= VDList[id]->width;
 		int tmpH	   	= VDList[id]->height;
 
@@ -1487,32 +1487,11 @@ void videoInput::setAttemptCaptureSize(int id, int w, int h){
 // (maybe move to private?)                                           
 // ---------------------------------------------------------------------- 
 
-void videoInput::setPhyCon(int id, int conn){
+void videoInput::setPhyCon(int id, PhysicalConnectorType connection){
 
-		switch(conn){
-		
-			case 0:
-				VDList[id]->connection = PhysConn_Video_Composite;
-				break;
-			case 1:		
-				VDList[id]->connection = PhysConn_Video_SVideo;
-				break;
-			case 2:
-				VDList[id]->connection = PhysConn_Video_Tuner;
-				break;
-			case 3:
-				VDList[id]->connection = PhysConn_Video_USB;
-				break;	
-			case 4:
-				VDList[id]->connection = PhysConn_Video_1394;
-				break;	
-			default:
-				return; //if it is not these types don't set crossbar
-			break;
-		}
-
-		VDList[id]->storeConn	= conn;
-		VDList[id]->useCrossbar	= true;
+	VDList[id]->connection = connection;
+	VDList[id]->storeConn = connection;
+	VDList[id]->useCrossbar	= true;
 }
 
 

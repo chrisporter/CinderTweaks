@@ -46,6 +46,7 @@ Thanks to:
 	#   define _WIN32_WINNT 0x400
 #endif
 #include <windows.h>
+#include "Strmif.h"
 #undef min
 #undef max
 
@@ -217,8 +218,8 @@ class videoDevice{
 		bool autoReconnect;
 		int  nFramesForReconnect;
 		unsigned long nFramesRunning;
-		int  connection;
-		int	 storeConn;
+		PhysicalConnectorType  connection;
+		PhysicalConnectorType storeConn;
 		int  myID;
 		long requestedFrameTime; //ie fps
 		
@@ -270,8 +271,8 @@ class videoInput{
 
 		//These two are only for capture cards
 		//USB and Firewire cameras souldn't specify connection 
-		bool setupDevice(int deviceID, int connection);	
-		bool setupDevice(int deviceID, int w, int h, int connection); 
+		bool setupDevice(int deviceID, PhysicalConnectorType connection);
+		bool setupDevice(int deviceID, int w, int h, PhysicalConnectorType connection);
 		
 		//If you need to you can set your NTSC/PAL/SECAM
 		//preference here. if it is available it will be used.
@@ -343,7 +344,7 @@ class videoInput{
 				
 		
 	private:		
-		void setPhyCon(int deviceID, int conn);                   
+		void setPhyCon(int deviceID, PhysicalConnectorType connection);
 		void setAttemptCaptureSize(int deviceID, int w, int h);   
 		bool setup(int deviceID);
 		void processPixels(unsigned char * src, unsigned char * dst, int width, int height, bool bRGB, bool bFlip);

@@ -67,8 +67,10 @@ class Capture {
 	typedef std::shared_ptr<Device> DeviceRef;
 	
 	#if defined(CINDER_MSW)
-	static CaptureRef	create(int32_t width, int32_t height, const DeviceRef device,
-		PhysicalConnectorType connection) { return CaptureRef(new Capture(width, height, device, connection)); }
+	static CaptureRef	create(int32_t width, int32_t height, PhysicalConnectorType connection, 
+		const DeviceRef device = DeviceRef()) {
+		return CaptureRef(new Capture(width, height, device, connection));
+	}
 	#endif
 	static CaptureRef	create( int32_t width, int32_t height, const DeviceRef device = DeviceRef() ) { return CaptureRef( new Capture( width, height, device ) ); }
 	
